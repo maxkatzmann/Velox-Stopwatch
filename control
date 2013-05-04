@@ -1,0 +1,9 @@
+Package: com.maxkatzmann.veloxstopwatch
+Name: Velox Stopwatch
+Depends: firmware (>= 6.0), com.apextweaks.velox
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: This tweak is an add-on for Velox. It will present a stopwatch, in the folder opened for the Clock app. No options to configure.
+Maintainer: Max Katzmann
+Author: Max Katzmann
+Section: Addons (Velox)
