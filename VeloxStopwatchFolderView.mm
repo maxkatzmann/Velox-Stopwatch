@@ -27,18 +27,20 @@ static BOOL isTimerRunning = NO;
 
 -(UIView *)initWithFrame:(CGRect)aFrame{
 	self = [super initWithFrame:aFrame];
-    if (self) {
-		
-        //Add subviews, load data, etc.
+    if (self){
+		//Add subviews, load data, etc.
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
         
         veloxClockBundle = [[NSBundle bundleForClass:[self class]] autorelease];
         
         //adding the background
-        UIImage *backgroundImage = [UIImage imageWithContentsOfFile:[veloxClockBundle pathForResource:@"stripe_background" ofType:@"png"]];
-        UIImageView *backgroundImageView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
+        
+        UIImage *testImage = [UIImage imageWithContentsOfFile:[veloxClockBundle pathForResource:@"stripe_background" ofType:@"png"]];
+        
+        UIImageView *backgroundImageView = [[[UIImageView alloc] initWithImage:testImage] autorelease];
         backgroundImageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        
         [self addSubview:backgroundImageView];
         
         //adding buttons
@@ -71,7 +73,7 @@ static BOOL isTimerRunning = NO;
         [self addSubview:_timerLabel];
         
         [pool drain];
-    }
+	}
     return self;
 }
 
@@ -80,6 +82,7 @@ static BOOL isTimerRunning = NO;
     if (!isTimerRunning) {
         
         isTimerRunning = YES;
+        
         [_startButton setBackgroundImage:[UIImage imageWithContentsOfFile: [veloxClockBundle pathForResource:@"stop" ofType:@"png"]] forState:UIControlStateNormal];
         _startDate = [[NSDate date] retain];
         _timer = [NSTimer scheduledTimerWithTimeInterval:1.0/10.0
@@ -120,8 +123,23 @@ static BOOL isTimerRunning = NO;
     _timerLabel.text = timeString;
 }
 
+//this method will get called, when the folder is closed (we wan't to get rid of everything here)
+-(void)unregisterFromStuff {
+    isTimerRunning = NO;
+    [_timer invalidate];
+    
+    _timer = nil;
+    [_timer release];
+    
+    _timerLabel = nil;
+    [_timerLabel release];
+    
+    _startDate = nil;
+    [_startDate release];
+}
+
 +(int)folderHeight{
-    return 150; //Make folder bigger on i5 devices?
+	return 150; //Make folder bigger on i5 devices?
 }
 
 @end
